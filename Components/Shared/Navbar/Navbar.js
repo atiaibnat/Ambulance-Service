@@ -1,24 +1,46 @@
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import logo from "../../../assets/logos/navbar-logo.png";
+import PopupImg from "../../../assets/hero-banner.jpg";
 import Image from "next/image";
-import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
+import DialogLayout from "../Dialog/DialogLayout";
+import Signup from "../../Signup/Signup";
+import Login from "../../Login/Login";
+import useAuth from "../../Context/useAuth";
+// import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { loginWithGoogle } = useContext(AuthContext);
-  const hangleLoginWithGoogle = () => {
-    loginWithGoogle()
-      .then((result) => {
-        // The signed-in user info.
-        const user = result.user;
-        console.log(user);
-      })
+  const [signupOpen, setSignupOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const [userInfo, setUserInfo] = useState();
+
+  useEffect(() => {
+    console.log(
+      `https://rescue-reach-server.vercel.app/users-data/${user?.email}`
+    );
+    fetch(`https://rescue-reach-server.vercel.app/users-data/${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => setUserInfo(data))
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.log(error.message);
       });
+  }, [user, user?.email]);
+  const [isSignupPopupOpen, setSignupPopupOpen] = useState(false);
+  const [selectedUserType, setSelectedUserType] = useState(null);
+
+  const openSignupPopup = () => {
+    setSignupPopupOpen(true);
+  };
+
+  const closeSignupPopup = () => {
+    setSignupPopupOpen(false);
+    setSelectedUserType(null);
+  };
+
+  const handleUserTypeSelect = (userType) => {
+    setSelectedUserType(userType);
+    openSignupPopup();
   };
   const menu = (
     <>
@@ -57,7 +79,54 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="shadow-lg sticky top-0 bg-white">
+    <div className="shadow-lg sticky z-[1] top-0 bg-white">
+      <DialogLayout open={loginOpen} setOpen={setLoginOpen}>
+        <div className="px-6 py-4">
+          <Login />
+        </div>
+      </DialogLayout>
+      <DialogLayout open={signupOpen} setOpen={setSignupOpen}>
+        <div className="px-6 py-4">
+          {!selectedUserType ? (
+            <>
+              <div className="flex items-center">
+                <img
+                  className="h-[300px] w-[300px] object-cover hidden lg:block "
+                  src="https://img.freepik.com/free-vector/modern-emergency-word-concept-with-flat-design_23-2147939665.jpg?w=826&t=st=1690119455~exp=1690120055~hmac=94a035ebd42b342b4a80dace3f76576845e7b6cbebb6921c4d6b68d9d9285221"
+                  alt="PopupImg"
+                />
+                <div>
+                  <h2 className="text-[24px] font-extrabold text-center underline mb-6 ">
+                    Select User Type
+                  </h2>
+                  <button
+                    onClick={() => handleUserTypeSelect("Driver")}
+                    className="btn-select mx-4 bg-indigo-400 text-[18px] font-[700] p-4 rounded-2xl shadow-[0px_6px_0px_0px_#CA5F98]"
+                  >
+                    Driver
+                  </button>
+                  <button
+                    onClick={() => handleUserTypeSelect("Patient")}
+                    className="btn-select mx-4 bg-indigo-400 text-[18px] font-[700] p-4 rounded-2xl shadow-[0px_6px_0px_0px_#CA5F98]"
+                  >
+                    Patient
+                  </button>
+                  <button
+                    onClick={() => handleUserTypeSelect("Administrator")}
+                    className="btn-select mx-4 bg-indigo-400 text-[18px] font-[700] p-4 rounded-2xl shadow-[0px_6px_0px_0px_#CA5F98]"
+                  >
+                    Administrator
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <Signup selectedUserType={selectedUserType} />
+            </>
+          )}
+        </div>
+      </DialogLayout>
       <div class="px-4 py-1 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl xl:max-w-screen-xl 2xl:max-w-screen-2xl md:px-24 lg:px-8">
         <div class="relative flex items-center justify-between">
           <Link
@@ -68,18 +137,66 @@ const Navbar = () => {
           >
             <Image src={logo} className="w-32 h-full"></Image>
           </Link>
-          <ul class="flex items-center hidden space-x-8 lg:flex">{menu}</ul>
-          <ul class="flex items-center hidden space-x-8 lg:flex">
-            <li>
-              <button
-                onClick={hangleLoginWithGoogle}
-                class="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-secondary focus:shadow-outline focus:outline-none"
-                aria-label="Login"
-                title="Login"
-              >
-                Log In
-              </button>
-            </li>
+          <ul class=" items-center hidden space-x-8 lg:flex">{menu}</ul>
+          <ul class=" items-center hidden space-x-8 lg:flex">
+            {user?.email && (
+              <div className="group relative inline-block">
+                <button className="link-item">
+                  <a className="text-black font-medium text-lg font-serif dark:text-white px-5 py-3 rounded-md hover:bg-white/5 inline-flex items-center">
+                    <span className="mr-1 pr-4">
+                      <img
+                        style={{ height: "40px", width: "40px" }}
+                        className="link-item inline-flex items-center rounded-full object-cover"
+                        src={
+                          userInfo?.image
+                            ? userInfo?.image
+                            : `https://i.ibb.co/DMYmT3x/Generic-Profile.jpg`
+                        }
+                        alt=""
+                      />
+                    </span>
+                    <span className="h-4 w-1 fill-current"></span>
+                  </a>
+                </button>
+                <ul className="absolute hidden pt-1 text-gray-700 group-hover:block">
+                  <li className="">
+                    <Link href={`/user/${userInfo?._id}`}>
+                      <p className="whitespace-no-wrap block rounded-t bg-gray-200 py-2 px-4 hover:bg-gray-400">
+                        My Profile
+                      </p>
+                    </Link>
+                  </li>
+                  <li className="">
+                    <p
+                      onClick={() => logout()}
+                      className="whitespace-no-wrap block rounded-b bg-gray-200 py-2 px-4 hover:bg-gray-400 cursor-pointer"
+                    >
+                      Logout
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            )}
+            {!user?.email && (
+              <li>
+                <button
+                  onClick={() => setLoginOpen(true)}
+                  class="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-secondary focus:shadow-outline focus:outline-none mr-4"
+                  aria-label="Login"
+                  title="Login"
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => setSignupOpen(true)}
+                  class="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-primary hover:bg-secondary focus:shadow-outline focus:outline-none"
+                  aria-label="Login"
+                  title="Login"
+                >
+                  Signup
+                </button>
+              </li>
+            )}
           </ul>
           <div class="lg:hidden">
             <button

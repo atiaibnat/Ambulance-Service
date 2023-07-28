@@ -1,6 +1,11 @@
 import Link from "next/link";
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+// import Map from "../Map/Map";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("../Map/Map"), {
+  ssr: false,
+});
+const apikey = "AIzaSyBN1gauK2nrHna23I7pRWqpp0ORgxJ6Yjc";
 const HowToBook = () => {
   return (
     <div className="mb-10">
@@ -38,6 +43,7 @@ const HowToBook = () => {
               </h4>
             </div>
             <div>
+              {/* <Map /> */}
               <img
                 src="https://heera.it/wp-content/uploads/2011/11/google-maps-new-interface1.jpg"
                 alt=""
