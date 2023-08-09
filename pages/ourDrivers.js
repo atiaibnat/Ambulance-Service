@@ -1,17 +1,16 @@
 import React from "react";
-import GiveInfoMain from "../Components/GiveInfo/GiveInfoMain";
 import Navbar from "../Components/Shared/Navbar/Navbar";
 import Footer from "../Components/Shared/Footer/Footer";
-import authCheck from "../Components/Context/authCheck";
+import OurDriversIndex from "../Components/OurDrivers/OurDriversIndex";
 
-const giveInfo = () => {
+const ourDrivers = () => {
   return (
     <div>
       <Navbar />
-      <GiveInfoMain />
+      <OurDriversIndex />
       <Footer />
     </div>
   );
 };
 
-export default authCheck(giveInfo);
+export default ourDrivers;

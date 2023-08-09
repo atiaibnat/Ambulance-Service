@@ -1,6 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Sansita:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #424242;
+}
+
+::-webkit-scrollbar-thumb {
+  /* background: linear-gradient(#686868, #1f3341); */
+  background: #A3C7D6;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
 html,
 body {
   padding: 0;
@@ -25,6 +46,36 @@ a {
 .leaflet-container{
   height: 500px;
   z-index: 0;
+  border-radius: 10px;
+}
+
+.leaflet-right{
+  display: none;
+}
+
+/* Table Style Start */
+td,
+th {
+  padding: 5px 10px;
+}
+
+th {
+  padding: 10px 10px;
+}
+
+tr {
+  margin: 5px 0;
+}
+
+/* Table Style End */
+
+.card-design {
+  background-color: #36393e52;
+  border-radius: 0.5rem;
+}
+
+.swal-text {
+  text-align: center !important;
 }
 
 /* @media (prefers-color-scheme: dark) {

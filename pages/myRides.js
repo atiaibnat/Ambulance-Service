@@ -1,17 +1,16 @@
 import React from "react";
-import GiveInfoMain from "../Components/GiveInfo/GiveInfoMain";
 import Navbar from "../Components/Shared/Navbar/Navbar";
+import MyRidesIndex from "../Components/MyRides/MyRidesIndex";
 import Footer from "../Components/Shared/Footer/Footer";
-import authCheck from "../Components/Context/authCheck";
 
-const giveInfo = () => {
+const myRides = () => {
   return (
     <div>
       <Navbar />
-      <GiveInfoMain />
+      <MyRidesIndex />
       <Footer />
     </div>
   );
 };
 
-export default authCheck(giveInfo);
+export default myRides;
