@@ -5,7 +5,7 @@ import logo from "../../assets/logos/navbar-logo.png";
 import Image from "next/image";
 import Loading from "../Shared/Loading/Loading";
 
-const Login = () => {
+const Login = ({ setLoginOpen }) => {
   const { loginUser, user, logout, isLoading } = useAuth();
   const userInfo = user;
 
@@ -17,6 +17,7 @@ const Login = () => {
 
     loginUser(email, password);
     form.reset();
+    setLoginOpen(false);
   };
   return (
     <div>
@@ -53,6 +54,7 @@ const Login = () => {
                   required
                 />
               </div>
+              <h1 className="text-black mt-1">Forget password?</h1>
               <div className="mt-8 flex justify-center text-lg text-black">
                 <button
                   type="submit"

@@ -45,32 +45,32 @@ const DirectionMap = ({ waypoints }) => {
 };
 
 const Map = ({ data }) => {
-  const { userInfo } = useAuth();
+  const { userInfo, location } = useAuth();
   const customIcon = new Icon({
     iconUrl: "https://i.ibb.co/Dw3jpcX/Marker.png",
     // iconUrl: require("../../../assets/Marker.png"),
     iconSize: [20, 20],
   });
 
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(location?.latitude);
+  const [longitude, setLongitude] = useState(location?.longitude);
 
-  useEffect(() => {
-    // Get the user's geolocation
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        (error) => {
-          console.error("Error getting geolocation:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Get the user's geolocation
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         setLatitude(position.coords.latitude);
+  //         setLongitude(position.coords.longitude);
+  //       },
+  //       (error) => {
+  //         console.error("Error getting geolocation:", error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error("Geolocation is not supported by this browser.");
+  //   }
+  // }, []);
   const waypoints = [
     L.latLng(data?.pickUpGeoCode?.lat, data?.pickUpGeoCode?.lan),
     L.latLng(data?.dropGeoCode?.lat, data?.dropGeoCode?.lan),
@@ -103,20 +103,20 @@ const Map = ({ data }) => {
   ];
   return (
     <div>
-      {/* {latitude && longitude && ( */}
-      <MapContainer zoom={8}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <DirectionMap waypoints={waypoints} />
-        {markers?.map((marker) => (
-          <Marker position={marker?.geocode} icon={customIcon}>
-            <Popup>{marker?.popup}</Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-      {/* )} */}
+      {latitude && longitude && (
+        <MapContainer zoom={8}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <DirectionMap waypoints={waypoints} />
+          {markers?.map((marker) => (
+            <Marker position={marker?.geocode} icon={customIcon}>
+              <Popup>{marker?.popup}</Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      )}
     </div>
   );
 };
