@@ -211,6 +211,14 @@ const Navbar = () => {
             )}
             {!user?.email && (
               <li>
+                {/* <button
+                  onClick={() => setLoginOpen(true)}
+                  class="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide transition duration-200 rounded shadow-md focus:shadow-outline focus:outline-none mr-4 btn bg-slate-600 text-white hover:text-black hover:bg-red-300"
+                  aria-label="Login"
+                  title="Login"
+                >
+                  Log In
+                </button> */}
                 <button
                   onClick={() => setLoginOpen(true)}
                   class="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide transition duration-200 rounded shadow-md focus:shadow-outline focus:outline-none mr-4 btn bg-slate-600 text-white hover:text-black hover:bg-red-300"

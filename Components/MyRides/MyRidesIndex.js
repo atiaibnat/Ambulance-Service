@@ -300,6 +300,7 @@ const MyRidesIndex = () => {
                     </p>
                   </div>
                 </div>
+<<<<<<< HEAD
                 <div className="flex justify-between">
                   <button
                     onClick={() => {
@@ -317,6 +318,17 @@ const MyRidesIndex = () => {
                     Rate Driver
                   </Link>
                 </div>
+=======
+                <button
+                  onClick={() => {
+                    setOpenReport(true);
+                    setSelectedRide(ride);
+                  }}
+                  className="mt-6 bg-rose-500 text-black py-2 px-6 rounded-full hover:btn-ghost btn focus:outline-none transform transition "
+                >
+                  Report Ride
+                </button>
+>>>>>>> 98533f0b8d1e03461c5d5b2e7671e964dbae57e8
               </div>
             ))}
           </div>
